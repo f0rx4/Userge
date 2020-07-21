@@ -22,6 +22,14 @@
             "description": "Get it by running `bash genStr` command or ignore this",
             "required": false
         },
+        "BOT_TOKEN": {
+            "description": "Get this from https://t.me/botfather if you like to use userge as a bot",
+            "required": false
+        },
+        "OWNER_ID": {
+            "description": "Your user_id if you are gonna use userge as a bot",
+            "required": false
+        },
         "WORKERS": {
             "description": "Userbot Workers Count : Default = 4",
             "required": false
@@ -30,14 +38,19 @@
             "description": "Mongodb url from https://cloud.mongodb.com/"
         },
         "G_DRIVE_CLIENT_ID": {
-            "description": "Googel Drive API Keys from https://console.developers.google.com/"
+            "description": "Googel Drive API Keys from https://console.developers.google.com/",
+            "required": false
         },
         "G_DRIVE_CLIENT_SECRET": {
-            "description": "Googel Drive API Keys from https://console.developers.google.com/"
+            "description": "Googel Drive API Keys from https://console.developers.google.com/",
+            "required": false
         },
         "G_DRIVE_IS_TD": {
-            "description": "Set True if it is TeamDrive",
-            "value": "True"
+            "description": "Set true if it is TeamDrive",
+            "required": false
+        },
+        "LOG_CHANNEL_ID": {
+            "description": "Telegram Log Channel ID"
         },
         "G_DRIVE_INDEX_LINK": {
             "description": "Index link for gdrive",
@@ -87,10 +100,6 @@
             "description": "GDrive Folder ID",
             "required": false
         },
-        "LOG_CHANNEL_ID": {
-            "description": "Telegram Log Channel ID",
-            "required": false
-        },
         "HEROKU_APP_NAME": {
             "description": "given app name to the heroku app",
             "required": false
@@ -120,24 +129,15 @@
             "required": false
         }
     },
-    "addons": [
-    ],
+    "addons": [],
     "buildpacks": [
-        {
-            "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
-        }, {
-            "url": "https://github.com/HasibulKabir/heroku-buildpack-rarlab.git"
-        }, {
-            "url": "https://github.com/opendoor-labs/heroku-buildpack-p7zip"
-        }, {
-            "url": "https://github.com/rking32/heroku-buildpack-google-chrome"
-        }, {
-            "url": "https://github.com/rking32/heroku-buildpack-chromedriver"
-        }, {
-            "url": "https://github.com/heroku/heroku-buildpack-apt.git"
-        }, {
-            "url": "heroku/python"
-        }
+        {"url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"},
+        {"url": "https://github.com/HasibulKabir/heroku-buildpack-rarlab.git"},
+        {"url": "https://github.com/opendoor-labs/heroku-buildpack-p7zip"},
+        {"url": "https://github.com/rking32/heroku-buildpack-google-chrome"},
+        {"url": "https://github.com/rking32/heroku-buildpack-chromedriver"},
+        {"url": "https://github.com/heroku/heroku-buildpack-apt.git"},
+        {"url": "heroku/python"}
     ],
     "formation": {
         "worker": {

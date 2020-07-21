@@ -8,13 +8,14 @@
 #
 # All rights reserved.
 
-import asyncio
+import os
 import glob
-from os import path
+import asyncio
 from pathlib import Path
 from time import time
 from math import floor
 
+import wget
 import youtube_dl as ytdl
 
 from userge import userge, Message, Config, pool
@@ -38,15 +39,17 @@ async def ytinfo(message: Message):
     out = """
 **Title** >>
 __{title}__
-    
+
 **Uploader** >>
 __{uploader}__
-    
+
 {table}
     """.format_map(_exracted)
     if _exracted['thumb']:
-        await message.reply_photo(_exracted['thumb'], caption=out)
+        _tmp = wget.download(_exracted['thumb'], os.path.join(Config.DOWN_PATH, f"{time()}.jpg"))
+        await message.reply_photo(_tmp, caption=out)
         await message.delete()
+        os.remove(_tmp)
     else:
         await message.edit(out)
 
@@ -113,10 +116,10 @@ async def ytDown(message: Message):
         retcode = await _tubeDl(
             [message.filtered_input_str], __progress, startTime, None)
     if retcode == 0:
-        _fpath = glob.glob(path.join(Config.DOWN_PATH, str(startTime), '*'))[0]
+        _fpath = glob.glob(os.path.join(Config.DOWN_PATH, str(startTime), '*'))[0]
         await message.edit(f"**YTDL completed in {round(time() - startTime)} seconds**\n`{_fpath}`")
         if 't' in message.flags:
-            await upload(Path(_fpath), message.chat.id, message.flags)
+            await upload(message, Path(_fpath))
     else:
         await message.edit(str(retcode))
 
@@ -182,7 +185,7 @@ def _supported(url):
 
 @pool.run_in_thread
 def _tubeDl(url: list, prog, starttime, uid=None):
-    _opts = {'outtmpl': path.join(Config.DOWN_PATH, str(starttime), '%(title)s-%(format)s.%(ext)s'),
+    _opts = {'outtmpl': os.path.join(Config.DOWN_PATH, str(starttime), '%(title)s-%(format)s.%(ext)s'),
              'logger': LOGGER,
              'postprocessors': [
                  {'key': 'FFmpegMetadata'}
@@ -205,7 +208,7 @@ def _tubeDl(url: list, prog, starttime, uid=None):
 
 @pool.run_in_thread
 def _mp3Dl(url, prog, starttime):
-    _opts = {'outtmpl': path.join(Config.DOWN_PATH, str(starttime), '%(title)s.%(ext)s'),
+    _opts = {'outtmpl': os.path.join(Config.DOWN_PATH, str(starttime), '%(title)s.%(ext)s'),
              'logger': LOGGER,
              'writethumbnail': True,
              'postprocessors': [
